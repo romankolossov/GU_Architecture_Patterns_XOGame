@@ -32,12 +32,25 @@ class PlayerState: GameState {
         case .first:
             gameViewController?.firstPlayerTurnLabel.isHidden = false
             gameViewController?.secondPlayerTurnLabel.isHidden = true
+            gameViewController?.winnerLabel.isHidden = true
         case .second:
             gameViewController?.firstPlayerTurnLabel.isHidden = true
             gameViewController?.secondPlayerTurnLabel.isHidden = false
+            gameViewController?.winnerLabel.isHidden = true
+        case .firstAgainstComputer:
+            gameViewController?.firstPlayerTurnLabel.isHidden = false
+            gameViewController?.firstPlayerTurnLabel.text = "Your turn"
+            gameViewController?.secondPlayerTurnLabel.isHidden = true
+            gameViewController?.winnerLabel.isHidden = true
+        case .computer:
+            gameViewController?.firstPlayerTurnLabel.isHidden = true
+            gameViewController?.secondPlayerTurnLabel.isHidden = false
+            gameViewController?.secondPlayerTurnLabel.text = "Computer's turn"
+            gameViewController?.winnerLabel.isHidden = false
+            gameViewController?.winnerLabel.text = "Please, press on the board"
         }
         
-        gameViewController?.winnerLabel.isHidden = true
+        //gameViewController?.winnerLabel.isHidden = true
     }
     
     func addMark(at position: GameboardPosition) {

@@ -18,7 +18,7 @@ class GameViewController: UIViewController {
         }
     }
     private var counter: Int = 0
-
+    
     @IBOutlet var gameboardView: GameboardView!
     @IBOutlet var firstPlayerTurnLabel: UILabel!
     @IBOutlet var secondPlayerTurnLabel: UILabel!
@@ -32,18 +32,39 @@ class GameViewController: UIViewController {
         
         gameboardView.onSelectPosition = { [weak self] position in
             guard let self = self else { return }
+            
+            var boardPosition: GameboardPosition = position
+            
             self.counter += 1
-            self.currentState.addMark(at: position)
+            
+            guard let playerInputState = self.currentState as? PlayerState else { return }
+            
+            let player = playerInputState.player
+            
+            if player == .computer {
+                guard let gameBoardView = self.gameboardView else { return }
+                
+                repeat {
+                    let randomColumn = Int.random(in: 0...2)
+                    let randomRow = Int.random(in: 0...2)
+                    
+                    boardPosition = GameboardPosition(column: randomColumn, row: randomRow)
+                } while !gameBoardView.canPlaceMarkView(at: boardPosition)
+            }
+            
+            self.currentState.addMark(at: boardPosition)
             if self.currentState.isMoveCompleted {
                 self.setNextState()
             }
             
-//            self.gameboardView.placeMarkView(XView(), at: position)
+            //            self.gameboardView.placeMarkView(XView(), at: position)
         }
     }
     
     private func setFirstState() {
-        let player = Player.first
+        //let player = Player.first
+        let player = Player.firstAgainstComputer
+        //let player = Player.computer
         currentState = PlayerState(player: player, gameViewController: self,
                                    gameBoard: gameBoard, gameBoardView: gameboardView,
                                    markViewPrototype: player.markViewPrototype)
@@ -75,7 +96,6 @@ class GameViewController: UIViewController {
         gameBoard.clear()
         setFirstState()
         counter = 0
-        
     }
 }
 

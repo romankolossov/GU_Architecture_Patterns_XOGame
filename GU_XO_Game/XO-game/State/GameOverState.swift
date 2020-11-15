@@ -40,10 +40,12 @@ class GameOverState: GameState {
     
     func getWinnerName(from: Player) -> String {
         switch winner {
-        case .first:
+        case .first, .firstAgainstComputer:
             return "1st player"
         case .second:
             return "2nd player"
+        case .computer:
+            return "computer"
         case .none:
             return "there is no winner"
         }
