@@ -10,6 +10,7 @@ import UIKit
 
 class GameViewController: UIViewController {
     
+    // Some properties
     private let gameBoard = Gameboard()
     private lazy var referee = Referee(gameboard: gameBoard)
     private var currentState: GameState! {
@@ -24,6 +25,22 @@ class GameViewController: UIViewController {
     @IBOutlet var secondPlayerTurnLabel: UILabel!
     @IBOutlet var winnerLabel: UILabel!
     @IBOutlet var restartButton: UIButton!
+    @IBOutlet weak var gameSegmentControl: UISegmentedControl!
+
+    private var selectedGame: Game {
+        switch gameSegmentControl.selectedSegmentIndex {
+        case 0:
+            return .normal
+        case 1:
+            return .withComputer
+        case 2:
+            return .computerBegins
+        default:
+            return .normal
+        }
+    }
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,10 +78,20 @@ class GameViewController: UIViewController {
         }
     }
     
+    // MARK: - Major methods
+    
     private func setFirstState() {
-        //let player = Player.first
-        let player = Player.firstAgainstComputer
-        //let player = Player.computer
+        var player: Player
+        
+        switch selectedGame {
+        case .normal:
+            player = Player.first
+        case .withComputer:
+            player = Player.firstAgainstComputer
+        case .computerBegins:
+            player = Player.computer
+        }
+        
         currentState = PlayerState(player: player, gameViewController: self,
                                    gameBoard: gameBoard, gameBoardView: gameboardView,
                                    markViewPrototype: player.markViewPrototype)
@@ -88,6 +115,8 @@ class GameViewController: UIViewController {
                                        markViewPrototype: player.markViewPrototype)
         }
     }
+    
+    // MARK: - Actions
     
     @IBAction func restartButtonTapped(_ sender: UIButton) {
         Log(action: .restartGame)
