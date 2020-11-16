@@ -66,9 +66,10 @@
                                     <constraint firstAttribute="width" constant="368" id="ThD-1b-Ofu"/>
                                 </constraints>
                                 <segments>
-                                    <segment title="Play"/>
-                                    <segment title="Against computer"/>
-                                    <segment title="Computer starts"/>
+                                    <segment title="2 players"/>
+                                    <segment title="Computer"/>
+                                    <segment title="Computer 1st"/>
+                                    <segment title="5 steps"/>
                                 </segments>
                             </segmentedControl>
                         </subviews>

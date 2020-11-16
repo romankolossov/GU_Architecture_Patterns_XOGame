@@ -42,9 +42,7 @@ class FiveStepState: GameState {
             gameViewController?.secondPlayerTurnLabel.text = "2nd filling marks"
             gameViewController?.winnerLabel.isHidden = false
             gameViewController?.winnerLabel.text = "Keep pressing on the board"
-        case .firstAgainstComputer:
-            return
-        case .computer:
+        case .firstAgainstComputer, .computer:
             return
         }
     }

@@ -38,6 +38,8 @@ class GameViewController: UIViewController {
             return .withComputer
         case 2:
             return .computerBegins
+        case 3:
+            return .fiveSteps
         default:
             return .normal
         }
@@ -48,11 +50,9 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //setFirstState()
-        
-        //ordinaryGame()
-        setFirstStateFiveStepGame()
-        fiveStepGame()
+        firstPlayerTurnLabel.isHidden = true
+        secondPlayerTurnLabel.isHidden = true
+        winnerLabel.isHidden = true
         
     }
     
@@ -69,6 +69,8 @@ class GameViewController: UIViewController {
             player = Player.firstAgainstComputer
         case .computerBegins:
             player = Player.computer
+        default:
+            player = Player.first
         }
         
         currentState = PlayerState(player: player, gameViewController: self,
@@ -150,6 +152,12 @@ class GameViewController: UIViewController {
             guard let self = self else { return }
             stepCounter += 1
             
+            if (5 - stepCounter) == 0 {
+                self.winnerLabel.text = "To see results press on the board again"
+            } else {
+                self.winnerLabel.text = "Keep pressing on the board, \(5 - stepCounter) steps left"
+            }
+            
             guard let playerInputState = self.currentState as? FiveStepState else { return }
             
             let player = playerInputState.player
@@ -194,11 +202,12 @@ class GameViewController: UIViewController {
                     // determine a winner
                     if let winner = self.referee.determineWinner() {
                         self.currentState = GameOverState(winner: winner, gameViewController: self)
-                        return
                     }
+                    // clear the board
+                    self.gameboardView.clear()
                     self.gameBoard.clear()
                     
-                    // put marks on the board just to show them correctly
+                    // place marks on the board
                     for position in self.positionsFirst {
                         self.gameboardView.placeMarkView(XView(), at: position)
                     }
@@ -220,8 +229,16 @@ class GameViewController: UIViewController {
         
         gameboardView.clear()
         gameBoard.clear()
-        setFirstState()
         counter = 0
+        
+        switch selectedGame {
+        case .normal, .withComputer, .computerBegins:
+            setFirstState()
+            ordinaryGame()
+        case .fiveSteps:
+            setFirstStateFiveStepGame()
+            fiveStepGame()
+        }
     }
 }
 

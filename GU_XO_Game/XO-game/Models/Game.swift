@@ -9,6 +9,6 @@
 import Foundation
 
 enum Game {
-    case normal, withComputer, computerBegins
+    case normal, withComputer, computerBegins, fiveSteps
     
 }
