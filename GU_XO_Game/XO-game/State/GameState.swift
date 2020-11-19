@@ -14,5 +14,5 @@ protocol GameState {
     
     func begin()
     func addMark(at position: GameboardPosition)
-    
 }
+

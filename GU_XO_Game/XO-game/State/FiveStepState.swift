@@ -1,14 +1,14 @@
 //
-//  PlayerState.swift
+//  FiveStepState.swift
 //  XO-game
 //
-//  Created by Veaceslav Chirita on 11/6/20.
+//  Created by Роман Колосов on 15.11.2020.
 //  Copyright © 2020 plasmon. All rights reserved.
 //
 
 import Foundation
 
-class PlayerState: GameState {
+class FiveStepState: GameState {
     var isMoveCompleted: Bool = false
     
     public let player: Player
@@ -32,47 +32,32 @@ class PlayerState: GameState {
         
         case .first:
             gameViewController?.firstPlayerTurnLabel.isHidden = false
-            gameViewController?.firstPlayerTurnLabel.text = "1st player's turn"
+            gameViewController?.firstPlayerTurnLabel.text = "1st filling marks"
             gameViewController?.secondPlayerTurnLabel.isHidden = true
-            gameViewController?.winnerLabel.isHidden = true
+            gameViewController?.winnerLabel.isHidden = false
+            gameViewController?.winnerLabel.text = "Keep pressing on the board"
         case .second:
             gameViewController?.firstPlayerTurnLabel.isHidden = true
             gameViewController?.secondPlayerTurnLabel.isHidden = false
-            gameViewController?.secondPlayerTurnLabel.text = "2nd player's turn"
-            gameViewController?.winnerLabel.isHidden = true
-        case .firstAgainstComputer:
-            gameViewController?.firstPlayerTurnLabel.isHidden = false
-            gameViewController?.firstPlayerTurnLabel.text = "Your turn"
-            gameViewController?.secondPlayerTurnLabel.isHidden = true
-            gameViewController?.winnerLabel.isHidden = true
-        case .computer:
-            gameViewController?.firstPlayerTurnLabel.isHidden = true
-            gameViewController?.secondPlayerTurnLabel.isHidden = false
-            gameViewController?.secondPlayerTurnLabel.text = "Computer's turn"
+            gameViewController?.secondPlayerTurnLabel.text = "2nd filling marks"
             gameViewController?.winnerLabel.isHidden = false
-            gameViewController?.winnerLabel.text = "Please, press on the board"
+            gameViewController?.winnerLabel.text = "Keep pressing on the board"
+        case .firstAgainstComputer, .computer:
+            return
         }
     }
     
     func addMark(at position: GameboardPosition) {
         Log(action: .playerSetMark(player: player, position: position))
         
-        guard let gameBoardView = gameBoardView, gameBoardView.canPlaceMarkView(at: position) else {
-            return
-        }
-        //Before Prototype
+        guard let gameBoardView = gameBoardView
+        //gameBoardView.canPlaceMarkView(at: position)
+        else { return }
         
-//        let markView: MarkView
-//
-//        switch player {
-//        case .first:
-//            markView = XView()
-//        case .second:
-//            markView = OView()
-//        }
-//
         gameBoard?.setPlayer(player, at: position)
         gameBoardView.placeMarkView(markViewPrototype.copy(), at: position)
-        isMoveCompleted = true
+        //isMoveCompleted = true
     }
 }
+
+
